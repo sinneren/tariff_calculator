@@ -19,7 +19,7 @@ class Calculator extends Component {
         if (data.value > 99) users = 99;
 
         this.props.stateHandle({
-            users: users
+            users: parseInt(users, 10)
         });
     }
     handlePeriodChange = (event, data) => {
