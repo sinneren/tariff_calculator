@@ -18,6 +18,7 @@ class App extends Component {
       price: 0,
       discount_price: 0,
       additional_discount: 0.05,
+      user_price: 0,
     };
     this.priceMatrix = {
         rent: [2290, 1790, 1259, 990, 820, 700, 620, 590, 565, 547, 540, 449, 399],
@@ -42,6 +43,7 @@ class App extends Component {
   calculate = () => {
     let price = 0;
     let discount_price = 0;
+    let user_price = 0;
     let discount = 1;
 
     if (this.state.users < 9) {
@@ -69,10 +71,11 @@ class App extends Component {
     discount = this.discountPlan[this.state.period] + this.state.additional_discount;
     price = ~~(price * this.priceMatrix.support * this.state.period);
     discount_price = ~~(price * discount);
-
+    user_price = ~~(price / this.state.users / this.state.period);
     this.setState({
       price: price,
       discount_price: discount_price,
+      user_price: user_price,
     });
   }
   componentDidMount() {

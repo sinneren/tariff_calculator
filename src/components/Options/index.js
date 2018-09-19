@@ -24,9 +24,10 @@ class Options extends Component {
                     {(this.props.tariff.additional_discount > 0) ? ' и дополнительной скидкой ' + this.convertAdditionalDiscountToPercent(this.props.tariff.additional_discount) + ' %': ''}
                     &nbsp;:
                     <div>
-                        <p><s>{this.props.tariff.price}</s></p>
-                        <p><b>{this.props.tariff.discount_price}</b></p>
+                        <p><s>{this.props.tariff.price} ₽</s></p>
+                        <p><b>{this.props.tariff.discount_price} ₽</b></p>
                     </div>
+                    <div>За 1 пользователя в месяц на выбранном тарифном плане: {this.props.tariff.user_price} ₽</div>
                 </blockquote>
             </div>
         )
