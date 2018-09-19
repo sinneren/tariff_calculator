@@ -1,2 +1,2 @@
 # tariff_calculator
-Tariff calculator ReCRM React version 
+Tariff calculator of ReCRM ported to React with Semantic UI
