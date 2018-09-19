@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './style.css';
 import { Input, Segment, Checkbox, List, Radio } from 'semantic-ui-react';
 
 class Calculator extends Component {
@@ -12,15 +11,16 @@ class Calculator extends Component {
             period: '6',
             region: false,
             price: 0,
+            discount_price: 0,
             additional_discount: 0,
         };
         this.priceMatrix = {};
-        this.discountPlan = [
+        this.discountPlan = {
             "3": 1,
             "6": 0.8,
             "12": 0.85,
             "24": 0.7,
-        ];
+        };
         this.handleUsersChange = this.handleUsersChange.bind(this);
         this.handlePeriodChange = this.handlePeriodChange.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
@@ -49,6 +49,8 @@ class Calculator extends Component {
     }
     calculate = () => {
         let price = 0;
+        let discount_price = 0;
+        let discount = 1;
 
         if (this.state.users < 9) {
             price = this.priceMatrix.rent[this.state.users - 1] * this.state.users;
@@ -72,20 +74,28 @@ class Calculator extends Component {
             price = price * this.priceMatrix.region;
         }
 
-        price = price * this.priceMatrix.support * this.state.period;
+        discount = this.discountPlan[this.state.period] + this.state.additional_discount;
+        price = ~~(price * this.priceMatrix.support * this.state.period);
+        discount_price = ~~(price * discount);
 
         this.setState({
-            price: price
+            price: price,
+            discount_price: discount_price,
         });
     }
-    componentDidMount () {
+    componentWillMount () {
         this.setState({
-            ...this.props.defaults
+            ...this.props.defaults,
         });
         this.priceMatrix = {
-            ...this.props.prices
-        }
+            ...this.props.prices,
+        };
+    }
+    componentDidMount () {
         this.calculate();
+    }
+    componentDidUpdate () {
+
     }
     render() {
         return (
@@ -99,8 +109,8 @@ class Calculator extends Component {
                     <Checkbox label={{ children: 'XML-фиды для выгрузки на площадки' }} onChange={this.handleCheckboxChange} checked={this.state.xml} name="xml" />
                 </Segment>
                 <Segment vertical>
+                    <p>Хотите скидку? Заплатите за</p>
                     <List horizontal>
-                        <div>Хотите скидку? Заплатите за</div>
                         <List.Item>
                             <Radio
                                 label='Квартал'
@@ -152,6 +162,7 @@ class Calculator extends Component {
                         <List.Item>{this.state.region + ""}</List.Item>
                         <List.Item>{this.state.additional_discount}</List.Item>
                         <List.Item>{this.state.price + ""}</List.Item>
+                        <List.Item>{this.state.discount_price + ""}</List.Item>
                     </List>
                 </div>
             </div>
